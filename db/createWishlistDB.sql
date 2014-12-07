@@ -1,15 +1,14 @@
 ########################################################################
 
-# to execute:  mysql -p -u root --local-infile<createGiftsDB.sql
-
-# columns: SEQUENCE	TITLE	DESCRIPTION	LINK	FIRSTNAME	LASTNAME
+# to execute:  mysql -p -u root --local-infile<createWishlistDB.sql
 
 ########################################################################
 
-CREATE DATABASE IF NOT EXISTS selfprop_spc;
-USE selfprop_spc;
+CREATE DATABASE IF NOT EXISTS wishlist;
+USE wishlist;
 
 DROP TABLE IF EXISTS gifts;
+DROP TABLE IF EXISTS groups;
 DROP TABLE IF EXISTS owners;
 
 
@@ -20,15 +19,23 @@ CREATE TABLE gifts (
 	link VARCHAR(200), 
 	ownerID	INT
 	);
-	
+
+
+CREATE TABLE groups ( 
+	PRIMARY KEY(groupID), 
+	name VARCHAR(120), 
+	groupOrder INT, 
+	groupID INT NOT NULL AUTO_INCREMENT 
+	);
 	
 CREATE TABLE owners ( 
 	PRIMARY KEY(ownerID), 
 	firstname VARCHAR(120), 
 	lastname VARCHAR(120), 
+	groupID INT,
 	ownerID INT NOT NULL AUTO_INCREMENT 
 	);
 
 INSERT INTO owners (firstname,lastname) VALUES ("Miles","Poindexter");
-INSERT INTO owners (firstname,lastname) VALUES ("Lycel","Villanueva");
-INSERT INTO owners (firstname,lastname) VALUES ("Grace","Kulthongkham");
+INSERT INTO owners (firstname,lastname) VALUES ("Test","Person");
+
