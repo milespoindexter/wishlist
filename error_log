@@ -1,0 +1,6 @@
+[31-Dec-2013 11:08:31 America/Chicago] PHP Warning:  require_once(GroupMgr.php): failed to open stream: No such file or directory in /home/xdebaflh/public_html/wishlist_jquery/groupSvc.php on line 8
+[31-Dec-2013 11:08:31 America/Chicago] PHP Fatal error:  require_once(): Failed opening required 'GroupMgr.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/xdebaflh/public_html/wishlist_jquery/groupSvc.php on line 8
+[31-Dec-2013 11:08:52 America/Chicago] PHP Warning:  require_once(GroupMgr.php): failed to open stream: No such file or directory in /home/xdebaflh/public_html/wishlist_jquery/groupSvc.php on line 8
+[31-Dec-2013 11:08:52 America/Chicago] PHP Fatal error:  require_once(): Failed opening required 'GroupMgr.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/xdebaflh/public_html/wishlist_jquery/groupSvc.php on line 8
+[31-Dec-2013 11:09:05 America/Chicago] PHP Warning:  require_once(GroupMgr.php): failed to open stream: No such file or directory in /home/xdebaflh/public_html/wishlist_jquery/groupSvc.php on line 8
+[31-Dec-2013 11:09:05 America/Chicago] PHP Fatal error:  require_once(): Failed opening required 'GroupMgr.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/xdebaflh/public_html/wishlist_jquery/groupSvc.php on line 8

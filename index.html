@@ -1,0 +1,682 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>WishList</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <!-- link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script -->
+    <link rel="stylesheet" href="http://codeorigin.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
+    <link rel="stylesheet" href="http://codeorigin.jquery.com/ui/1.10.3/themes/overcast/jquery-ui.css" />
+    <!-- link rel="stylesheet" type="text/css" href="styles/gifts.css" title="gifts styles" -->
+
+
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+    <script src="http://codeorigin.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/json2.js"></script>
+    
+</head>
+<body >
+
+<div class="ui-body-b" data-theme="b" data-role="page" id="loginPg">
+
+<div data-role="header"> 
+    <h1>Wish List: Please Log in . . .</h1> 
+</div> 
+
+<div data-role="content">
+
+    <form id="loginForm">
+        <input type="text" placeholder="username" id="username">
+        <input type="password" placeholder="password" id="pwd">
+        <button type="submit" id="loginButton" value="login">Login</button>
+    </form>
+
+    <div id="errorMsg" style="display: none; text-align: center; color: red;"></div>
+
+</div><!-- end of content div -->
+
+</div><!-- end of login page div #loginPg -->
+
+
+<!-- wish list page -->
+<div class="ui-body-b" data-theme="b" data-role="page" id="wishListPg">
+
+<div data-role="header">
+    <h1>Wish List</h1> 
+    <a id="logoutButton" class="ui-btn-right" data-mini="true" data-inline="true" data-role="button">Log Out</a>    
+</div> 
+
+<div data-role="content">
+
+    <form>
+        <div id="groups" style="display: none">
+            <select name="groupID" id="groupSel">
+            </select>
+        </div>
+
+        <div id="owners" style="display: none">
+            <select name="ownerID" id="ownerSel">
+            </select>
+        </div>
+
+    </form>
+
+    <div id="addWishDiv" style="display: none">
+        <a href="#createPg" data-role="button" data-inline="false" id="gotoCreateWish" transition="flip" data-icon="plus">Add a Wish</a>
+    </div>
+
+    <div id="wishList" style="display: none">
+
+        <ul id="wishes" data-role="listview" style="margin: 2px;">
+        
+        </ul>
+
+    </div>
+
+</div><!-- end of content div: #wishListPg -->
+
+<div data-role="footer" data-theme="b" data-position="fixed"> 
+    <h4>app by <a id="mpEmail" href="mailto:test@test.com">MP Mobile</a></h4>  
+</div> 
+
+
+</div><!-- end of wish list page div #wishListPg -->
+
+<!-- wish (details) page -->
+<div class="ui-body-b" data-theme="b" data-role="page" id="wishPg">
+
+<div data-role="header" class="ui-bar"> 
+
+    <div class="ui-grid-b ui-btn-left">
+        <div class="ui-block-b"> <a data-icon="back" data-mini="true" data-inline="true" data-role="button" href="#wishListPg" transition="slide">Back</a></div>
+    </div>
+
+    <h1>Wish Details</h1>
+    
+   
+</div> 
+
+<div data-role="content">
+
+<form>
+    <div id="details">    
+    </div>
+
+</form>
+
+    <div data-role="controlgroup" data-type="horizontal">
+        <a href="#updatePg" data-inline="false" data-role="button" id="gotoUpdateWish" transition="flip" data-icon="edit">Edit</a>
+        <a id="deleteWish" data-inline="false" data-role="button" data-icon="delete">Delete</a>
+    </div>
+
+</div><!-- end of content div -->
+
+<div data-role="footer" data-theme="b" data-position="fixed"> 
+    <h4>app by <a id="mpEmail" href="mailto:test@test.com">MP Mobile</a></h4> 
+</div>
+
+</div><!-- end of wish (details) page div #wishPg -->
+
+
+<!-- update wish form page -->
+<div class="ui-body-b" data-theme="b" data-role="page" id="updatePg">
+
+<div data-role="header"> 
+    <a data-icon="back" href="#wishPg" transition="slide">Back</a>
+    <h1>Update Wish</h1>
+</div> 
+
+<div data-role="content" >
+
+    <form  action="/" id="updateWishForm">
+        <input type="hidden" name="wishID" id="wishID"/>
+        <input type="hidden" name="ownerID" id="ownerID"/>
+
+        <input type="text" name="title" id="title" placeholder="Title"/>
+        <textarea name="description" placeholder="Description" id="description"/></textarea>
+        <input type="text" name="link" placeholder="Link" id="link"/>
+
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                <!-- legend>Rank:</legend -->
+                <input type="radio" class="rankRadio" name="rank" id="rank1" value="1">
+                <label for="rank1">1st choice</label>
+                <input type="radio" class="rankRadio" name="rank" id="rank2" value="2">
+                <label for="rank2">2nd choice</label>
+                <input type="radio" class="rankRadio" name="rank" id="rank3" value="3">
+                <label for="rank3">3rd choice</label>
+            </fieldset>
+        </div>
+        
+        <select id="purchased" name="purchased">
+            <option id="purchased_false" value="">not purchased</option>
+            <option id="purchased_true" value="true">purchased</option>
+            
+        </select>
+        
+        <button id="updateWish" type="submit" name="submit" value="Update" data-theme="b">Update</button>
+
+    </form>
+</div><!-- end of content div -->
+
+<div data-role="footer" data-theme="b" data-position="fixed"> 
+    <h4>app by <a id="mpEmail" href="mailto:test@test.com">MP Mobile</a></h4> 
+</div> 
+
+</div><!-- end of update wish form page div #updatePg -->
+
+
+<!-- Create wish form page -->
+<div class="ui-body-b" data-theme="b" data-role="page" id="createPg">
+
+<div data-role="header"> 
+    <a data-icon="back" href="#wishListPg" transition="slide">Back</a>
+    <h1>Make a Wish</h1>
+</div> 
+
+<div data-role="content">
+    <form  action="/" id="createWishForm">
+        <input type="hidden" name="ownerID" id="ownerID"/>
+        
+        <input type="text" name="title" id="title" placeholder="Title"/>
+        <textarea name="description" placeholder="Description" id="description"/></textarea>
+        <input type="text" name="link" placeholder="Link" id="link"/>
+
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                <!-- legend>Rank:</legend -->
+                <input type="radio" class="rankRadio" name="rank" id="rank1" value="1">
+                <label for="rank1">1st choice</label>
+                <input type="radio" class="rankRadio" name="rank" id="rank2" value="2">
+                <label for="rank2">2nd choice</label>
+                <input type="radio" class="rankRadio" name="rank" id="rank3" value="3">
+                <label for="rank3">3rd choice</label>
+            </fieldset>
+        </div>
+        
+        <button id="createWish" type="submit" name="submit" value="Create" data-theme="b">Create</button>
+
+
+    </form>
+</div><!-- end of content div -->
+
+<div data-role="footer" data-theme="b" data-position="fixed"> 
+    <h4>app by <a id="mpEmail" href="mailto:test@test.com">MP Mobile</a></h4> 
+</div> 
+
+</div><!-- end of Create wish form page div #createPg -->
+
+<script language="JavaScript"> 
+
+    var uname = "your_username"; 
+    var upass = "your_pwd";
+    var svcBase = "http://your.site.com/wishlist/";
+    var mpEmail = "selfpropelledcity@gmail.com";
+
+    /*
+    if (window.jQuery) {  
+        // jQuery is loaded
+        alert("jQuery loaded");
+
+    } else {
+        // jQuery is not loaded
+    }
+    */
+
+    $( document ).ready(function() { /* DOM ready */
+    //$(document).on('pageinit',function(event){
+
+    	$("#mpEmail").prop("href", "mailto: "+mpEmail);
+
+        $("#loginPg").on("pagebeforeshow", function () {
+            var wCookie = $.cookie("wishlist_cookie");
+            if(wCookie) {
+                //redirect to wishes page . . .
+                //window.location.href="wishes.html";
+                //console.log("switching to wishListPg");
+                $.mobile.pageContainer.pagecontainer("change", "#wishListPg", {transition: "fade"});
+
+            }
+        });
+        
+        $("#username").focus( function() {
+            $("#errorMsg").fadeOut("slow");
+            //user = $(this).val();
+            //alert('username set to: ' + $(this).val());
+        });
+
+        $("#pwd").focus( function() {
+            $("#errorMsg").fadeOut("slow");
+            //pwd = $(this).val();
+            //alert('pwd set to: ' + $(this).val());
+        });
+        
+
+        //handle login attempt
+        $("#loginForm").submit(function(event) {
+            event.preventDefault(); //cancel the form submit action
+            user = $("#username").val();
+            pwd = $("#pwd").val();
+            //$('#loginForm')[0].reset();
+            //console.log("user: "+user+", pwd: "+pwd);
+            if(user == uname && pwd == upass) {
+                //set the cookie
+                $.cookie("wishlist_cookie", "logged-in");
+                //window.location.href="wishes.html";
+                $.mobile.pageContainer.pagecontainer("change", "#wishListPg", {transition: "flip"});
+            }
+            else {
+                //add error msg
+                $("#errorMsg").html("<h3>You WISH that was the correct login . . . </h3>").fadeIn("slow");
+            }
+            //return null;
+        });
+
+        //pagebeforeshow, pageshow, pagechange ??
+        $("#wishListPg").on("pageshow", function () {
+            //console.log("groupSel li count = " + $('#groupSel option').length);
+            if ($('#groupSel option').length < 1) {
+
+                $('#groupSel').empty().append("<option value=\"\"> -- please choose --</option>");
+                
+                var groupQuery = svcBase + "groupSvc.php";
+                //console.log("reloading group selector. query: "+groupQuery);
+                $.getJSON( groupQuery, function( groups ) {
+                    
+                    $.each(groups, function (i, item) {
+                        
+                        $('#groupSel').append($('<option>', { 
+                            value: item.groupID,
+                            text : item.name
+                        }));
+
+                        $('#groupSel').selectmenu('refresh');
+                        
+                    });
+                    
+                    //now show the selector
+                    $('#groupSel').selectmenu('refresh');
+                    
+
+                });
+            };
+            $("#groups").fadeIn("slow");
+
+            //always reload the wishlist for this page, in case items have been added/update/deleted but other pages
+            $( "#ownerSel" ).trigger( "change" );
+
+        });
+
+        //handle logout function
+        $("#logoutButton").click(function() {
+            //delete the cookie
+            $.removeCookie("wishlist_cookie");
+            //window.location.href="index.html";
+            $.mobile.pageContainer.pagecontainer("change", "#loginPg", {transition: "flip"});
+        });
+
+
+        //handle changes to the group selector
+        $( "#groupSel" ).change(function () {
+            $('#ownerSel').empty().append("<option value=\"\"> -- please choose --</option>").selectmenu('refresh');
+            $("#wishList").fadeOut("slow");
+            $("#addWishDiv").fadeOut("slow");
+            var group = $(this).val();
+            //load list of owners in selected group
+            //alert("you selected: "+group);
+            var ownerQuery = svcBase + "ownerSvc.php?groupID="+group;
+            //console.log("query: "+ownerQuery);
+            $.getJSON( ownerQuery, function( owners ) {
+                //console.log("owner: "+owners[0].firstname);
+
+                $.each(owners, function (i, item) {
+                    /*
+                    var o = "<option value=\""+item.ownerID+"\">"+item.firstname+" "+item.lastname+"</option>";
+                    console.log("appending: "+o);
+                    $("#ownerSel").append(o);
+                    */
+                    
+                    $('#ownerSel').append($('<option>', { 
+                        value: item.ownerID,
+                        text : item.firstname + " " + item.lastname
+                    }));
+                    
+                    $('#ownerSel').selectmenu('refresh');
+                    
+                });
+                
+                //now show the selector
+                $('#ownerSel').selectmenu('refresh');
+                $("#owners").fadeIn("slow");
+            });
+        });
+
+        //handle changes to the owner selector
+        $( "#ownerSel" ).change(function (event) {
+            //event.preventDefault(); //cancel the form action
+            //$("#wishList").fadeOut("slow");
+            var owner = $(this).val();
+            //load wishlist for selected owner
+            if(owner) {
+                console.log("owner selected: "+owner);
+
+                $("#wishList").fadeOut("slow", function() {
+                    var wishListQuery = svcBase + "wishSvc.php?ownerID="+owner;
+                    //console.log("query: "+wishListQuery);
+                    $.getJSON( wishListQuery, function( wishes ) {
+                        $('#wishes').empty();
+                        //if list is empty post a msg
+                        emptyMsg = "This person has no wishes in their wishlist . . .";
+                        try {
+                            typeof(wishes[0].rank);
+                        }
+                        catch(e) {
+                            //console.log("no wishes for "+owner);
+                            $('#wishes').append("<li data-role=\"list-divider\" style=\"text-align: center;\">"+emptyMsg+"</li>");
+                        }
+                        
+                       
+                        rank1Set = false;
+                        rank2Set = false;
+                        rank3Set = false;
+
+                        $.each(wishes, function (i, wish) {
+                            if(wish.rank === "1" && !rank1Set) {
+                                $('#wishes').append("<li data-role=\"list-divider\">1st Choice</li>");
+                                rank1Set = true;
+                            }
+                            else if(wish.rank === "2" && !rank2Set) {
+                                $('#wishes').append("<li data-role=\"list-divider\">2nd Choice</li>");
+                                rank2Set = true;
+                            }
+                            else if(wish.rank === "3" && !rank3Set) {
+                                $('#wishes').append("<li data-role=\"list-divider\">3rd Choice</li>");
+                                rank3Set = true;
+                            }
+                            $('#wishes').append("<li><a id=\""+wish.wishID+"\" class=\"detailPage\" >"+wish.title+
+                                "</a>"+
+                                "<div id=\"detail_"+wish.wishID+"\" class=\"details\" style=\"display: none; margin: 15px;\">"+
+                                "<p>"+wish.description+"</p>"+
+                                "<p><a href=\""+wish.link+"\">"+wish.link+"</a></p>"+
+                                "<p>Purchased: "+wish.purchased+"</p>"+
+                                "</div>"+
+                                "</li>"
+                                );
+                        });
+                    
+                        //now show the wishlist
+                        $("#wishes").listview('refresh');
+                        $("#wishList").fadeIn("slow");
+
+                        if(owner > 0) {
+                            $("#addWishDiv").fadeIn("slow");
+                            $("body").data("ownerId", owner);
+                        }
+                        else {
+                            $("#addWishDiv").fadeOut("slow");
+                        }
+                    });
+                    
+                });
+
+            }
+            
+
+            
+        }); 
+
+        //handle clicks to link to details page 
+        $(document).on("click", "[class*='detailPage']", function() {
+            wishId = $(this).attr('id');
+            //console.log("wishId: "+wishId);
+            $("body").data("wishId", wishId);
+            //DEPRECATED
+            //$.mobile.changePage("#wishPg", { data: { "wishID": wishId }, transition: "slide" });
+
+            //New API
+            $.mobile.pageContainer.pagecontainer("change", "#wishPg", {transition: "slide"});
+            
+        });
+
+        //handle clicks to open hidden div
+        /*
+        $(document).on("click", "[class*='detailPage']", function() {
+            $(".details").hide("slow"); //hide all others
+            divId = $(this).attr('id');
+            console.log("divId: "+divId);
+            $("#detail_"+divId).show("slow");
+            
+        }); 
+        */
+
+        $("#wishPg").on("pagebeforeshow", function () {
+            //console.log("getting wishID from data store . . .");
+            //console.log("wishId: "+$("body").data("wishId"));
+
+            $("#details").fadeOut("fast", function() {
+                var wishQuery = svcBase + "wishSvc.php?wishID="+$("body").data("wishId");
+                var wishID = null;
+                //console.log("wish query: "+wishQuery);
+                $.getJSON( wishQuery, function( wish ) {
+                    wishID = wish.wishID;
+                    $('#details').empty().append("<h3>"+
+                                        wish.title+"</h3>");
+                    $('#details').append("<p>"+wish.description+"</p>");
+                    $('#details').append("<p><a class=\"extLink\" href=\""+wish.link+"\">"+wish.link+"</a></p>");
+                    $('#details').append("<p>rank: "+wish.rank+"</p>");
+                    if(wish.purchased) {
+                        $('#details').append("<p>This item has already been purchased</p>");
+                    }
+
+                });
+                $("#details").fadeIn("slow");
+
+            });
+            
+        });
+
+
+        //handle click on delete button
+        $("#deleteWish").click(function() {
+            var wishID = $("body").data("wishId");
+            var jsonDel = { "delete": wishID };
+            console.log("deleting wish: "+wishID);
+            var jsonStr = JSON.stringify(jsonDel);
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: svcBase+"wishSvc.php",
+                data: jsonStr,
+                dataType: "json",
+                success: function (response) {
+                    //remove wishID from data store
+                    $("body").data("wishId", "");
+
+                    alert("success: "+response.success);
+                    $.mobile.pageContainer.pagecontainer("change", "#wishListPg", {transition: "slide"});
+                }
+            });
+
+        });
+
+        //handle create form submit button
+        //$("#createWish").click(function() { 
+        $('#createWishForm').submit(function(e){
+            e.preventDefault();
+            //var form = $(this);
+            
+            //get rank radio button value
+            var wishRank = "1";
+            var selectedRank = $("#createWishForm input[type='radio']:checked");
+            if (selectedRank.length > 0) {
+                wishRank = selectedRank.val();
+            }
+            console.log("selected wishRank = "+wishRank);
+          
+            var jsonCreate = { "create": {
+                    ownerID: $("#createWishForm #ownerID").val(),
+                    title: $("#createWishForm #title").val(),
+                    description: $("#createWishForm #description").val(),
+                    link: $("#createWishForm #link").val(),
+                    rank: wishRank,
+                    purchased: ""
+                }
+
+            };
+            
+            var jsonStr = JSON.stringify(jsonCreate);
+            console.log("jsonCreate = "+jsonStr);
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: svcBase+"wishSvc.php",
+                data: jsonStr,
+                dataType: "json",
+                success: function (response) {
+                    alert("success: "+response.success);
+                    //$.mobile.pageContainer.pagecontainer("change", "#wishListPg", {transition: "slide"});
+                },
+                error:  function (error) {
+                    alert("error: "+JSON.stringify(errorStr[0]));
+                },
+                statusCode: {
+                    404: function() {
+                      alert( "page not found error thrown from wishSvc" );
+                    }
+                  }
+            });
+
+        });
+
+
+        //handle click on update form submit button
+        $('#updateWishForm').submit(function(e){
+            e.preventDefault();
+            //var form = $(this);
+            console.log("update: wishID= "+$("#updateWishForm #wishID").val());
+
+            //get rank radio button value
+            var wishRank = "1";
+            var selectedRank = $("#updateWishForm input[type='radio']:checked");
+            if (selectedRank.length > 0) {
+                wishRank = selectedRank.val();
+            }
+            console.log("selected wishRank = "+wishRank);
+          
+            var jsonUpdate = { "update": {
+                    wishID: $("#updateWishForm #wishID").val(),
+                    ownerID: $("#updateWishForm #ownerID").val(),
+                    title: $("#updateWishForm #title").val(),
+                    description: $("#updateWishForm #description").val(),
+                    link: $("#updateWishForm #link").val(),
+                    rank: wishRank,
+                    purchased: $("#updateWishForm #purchased").val()
+                }
+
+            };
+            
+            var jsonStr = JSON.stringify(jsonUpdate);
+            console.log("jsonUpdate = "+jsonStr);
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: svcBase+"wishSvc.php",
+                data: jsonStr,
+                dataType: "json",
+                success: function (response) {
+                    alert("success: "+response.success);
+                    //$.mobile.pageContainer.pagecontainer("change", "#wishListPg", {transition: "slide"});
+                },
+                error:  function (error) {
+                    alert("error: "+JSON.stringify(errorStr[0]));
+                },
+                statusCode: {
+                    404: function() {
+                      alert( "page not found error thrown from wishSvc" );
+                    }
+                  }
+            });
+            
+        });
+        
+
+        //handle update form
+        //$(document).on('pageinit', '#updatePg',  function(){
+        $("#updatePg").on("pagebeforeshow", function () {
+        //$(document).one("pagebeforeshow", "#updatePg", function (event) {
+            //console.log("getting wishID from data store . . .");
+            $('#updateWishForm #purchased option:selected').removeAttr('selected');
+
+            $("#updateWishForm").fadeOut("fast", function() {
+                var wishQuery = svcBase + "wishSvc.php?wishID="+$("body").data("wishId");
+                var wishID = null;
+                console.log("wish query: "+wishQuery);
+                $.getJSON( wishQuery, function( wish ) {
+                    $('#updateWishForm #title').val(wish.title);
+                    $('#updateWishForm #description').val(wish.description);
+                    $('#updateWishForm #link').val(wish.link);
+                    
+                    console.log("purchased: "+wish.purchased);
+                    if(wish.purchased) {
+                        console.log("setting purchased selector to true");
+                        $('#updateWishForm #purchased option[value="true"]').prop('selected',true);
+                        $('#updateWishForm #purchased option[value=""]').prop('selected',false);
+                    }
+                    else {
+                        console.log("setting purchased selector to false");
+                        $('#updateWishForm #purchased option[value=""]').prop('selected',true);
+                        $('#updateWishForm #purchased option[value="true"]').prop('selected',false);
+                    
+                    }
+
+                    $("#updateWishForm #purchased").selectmenu('refresh');
+
+                    
+                    $("#updateWishForm .rankRadio").prop("checked", false).checkboxradio("refresh");
+                    $("#updateWishForm #rank"+wish.rank).prop("checked", true).checkboxradio("refresh");
+
+                    $('#updateWishForm #wishID').val(wish.wishID);
+                    $('#updateWishForm #ownerID').val(wish.ownerID);
+                });
+                $("#updateWishForm").fadeIn("slow");
+
+            });
+            
+        });
+
+        //handle create form
+        $("#createPg").on("pagebeforeshow", function () {
+            //blank form . . . set a few defaults
+            console.log("setting create form ownerID: "+$("body").data("ownerId"));
+            $('#createWishForm #ownerID').val($("body").data("ownerId"));
+            $("#createWishForm #rank1").prop("checked", true).checkboxradio("refresh");
+        });
+
+        //handle clicks on external links and put them in a new box/window
+        //$(".extLink").on("click", function(event) {
+        $(document).delegate('a.extLink', 'click', function(event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+            var url = $(".extLink").attr("href");
+            console.log("handling click on extLink: "+url);
+            window.open(url, '_blank');
+        });
+
+    });
+
+    
+</script>
+
+</body>
+</html>
+
+
